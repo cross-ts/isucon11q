@@ -1,0 +1,41 @@
+- hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - role: init
+    - role: ssh
+    - role: git
+    - role: htop
+  # - role: netdata # 個人的にはdstatで十分なので入れない
+    - role: dstat
+  # - role: purge
+
+- hosts: common
+  become: yes
+  become_user: root
+  roles:
+    - role: alp
+    - role: pt
+    - role: stackprof
+    - role: reload/mysql
+    - role: reload/nginx
+    - role: reload/web
+
+- hosts: db
+  become: yes
+  become_user: root
+  roles:
+    - role: pt
+    - role: reload/mysql
+    - role: stop/nginx
+    - role: stop/web
+
+- hosts: web
+  become: yes
+  become_user: root
+  roles:
+    - role: alp
+    - role: stackprof
+    - role: reload/nginx
+    - role: reload/web
+    - role: stop/mysql

@@ -1,0 +1,37 @@
+- name: Install git
+  apt:
+    name: git
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Git settings
+  block:
+    - name: .gitconfig
+      copy:
+        src: .gitconfig
+        dest: "/home/{{ application_user }}/"
+        owner: "{{ application_user }}"
+        group: "{{ application_user }}"
+
+    - name: .gituser
+      copy:
+        src: ~/.gituser
+        dest: "/home/{{ application_user }}/"
+        owner: "{{ application_user }}"
+        group: "{{ application_user }}"
+
+- name: Add deploy key for isucon
+  copy:
+    src: "{{ deploy_key }}"
+    dest: "/home/{{ application_user }}/.ssh/"
+    owner: "{{ application_user }}"
+    group: "{{ application_user }}"
+    mode: 0600
+
+- name: Clone init repository
+  become: yes
+  become_user: "{{ application_user }}"
+  git:
+    repo: "{{ repository }}"
+    dest: "/home/{{ application_user }}/git"
+    ssh_opts: "-i {{ deploy_key }}"

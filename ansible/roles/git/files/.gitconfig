@@ -1,0 +1,28 @@
+[color]
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+[alias]
+  br = branch
+  co = checkout
+  cm = commit
+  st = status
+  sw = switch
+  df = diff
+  cp = cherry-pick
+  wt = worktree
+[core]
+  editor = vim
+  ignorecase = false
+[push]
+  default = current
+[include]
+  path = ~/.gituser
+[merge]
+  ff = false
+[pull]
+  ff = only
+[init]
+  defaultBranch = main
+

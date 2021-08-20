@@ -1,0 +1,17 @@
+[Unit]
+Description=stackprof
+
+[Service]
+WorkingDirectory=/home/isucon/stackprof
+PIDFile=/run/stackprof.pid
+
+User=isucon
+Group=isucon
+ExecStart=/home/isucon/local/ruby/bin/stackprof-webnav -d . -o 0.0.0.0
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+Restart   = always
+Type      = simple
+
+[Install]
+WantedBy=multi-user.target

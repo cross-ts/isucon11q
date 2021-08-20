@@ -1,0 +1,3 @@
+# 競技に使用するリポジトリの設定
+repository: git@github.com:cross-ts/isucon-base.git
+deploy_key: ~/.ssh/isucon_deploykey

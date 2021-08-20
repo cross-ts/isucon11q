@@ -1,0 +1,16 @@
+- name: Create stackprof dir
+  file:
+    path: "/home/{{ application_user }}/stackprof"
+    owner: "{{ application_user }}"
+    group: "{{ application_user }}"
+    mode: 0775
+    state: directory
+    force: yes
+
+- name: systemd settings
+  copy:
+    src: stackprof.service
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    force: yes

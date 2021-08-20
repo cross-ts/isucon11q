@@ -1,0 +1,22 @@
+- name: touch env.secret.sh
+  file:
+    path: "/home/{{ application_user }}/env.secret.sh"
+    owner: "{{ application_user }}"
+    group: "{{ application_user }}"
+    state: touch
+
+- name: Stop web server
+  systemd:
+    name: "{{ application_name }}.{{ item }}"
+    state: stopped
+    daemon_reload: no
+    enabled: no
+  with_items: "{{ languages.disable }}"
+
+- name: Reload web server
+  systemd:
+    name: "{{ application_name }}.{{ item }}"
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  with_items: "{{ languages.enable }}"

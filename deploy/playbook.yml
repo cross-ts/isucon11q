@@ -1,0 +1,29 @@
+- hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - role: git
+
+- hosts: common
+  become: yes
+  become_user: root
+  roles:
+    - role: reload/mysql
+    - role: reload/nginx
+    - role: reload/web
+
+- hosts: db
+  become: yes
+  become_user: root
+  roles:
+    - role: reload/mysql
+    - role: stop/nginx
+    - role: stop/web
+
+- hosts: web
+  become: yes
+  become_user: root
+  roles:
+    - role: reload/nginx
+    - role: reload/web
+    - role: stop/mysql

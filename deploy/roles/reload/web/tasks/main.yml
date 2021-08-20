@@ -1,0 +1,35 @@
+# - name: Update links
+#   file:
+#     src: "/home/{{ application_user }}/git/isucon/systemd/{{ item }}"
+#     dest: "/etc/systemd/system/{{ item }}"
+#     owner: root
+#     group: root
+#     state: link
+#     force: yes
+#   with_items:
+#     - "{{ application_name }}.ruby.service
+#
+# - name: Update env.sh
+#   file:
+#     src: "/home/{{ application_user }}/git/isucon/env.sh"
+#     dest: "/home/{{ application_user }}/env.sh"
+#     owner: "{{ application_user }}"
+#     group: "{{ application_user }}"
+#     state: link
+#     force: yes
+
+- name: Stop web server
+  systemd:
+    name: "{{ application_name }}.{{ item }}"
+    state: stopped
+    daemon_reload: no
+    enabled: no
+  with_items: "{{ languages.disable }}"
+
+- name: Reload web server
+  systemd:
+    name: "{{ application_name }}.{{ item }}"
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  with_items: "{{ languages.enable }}"

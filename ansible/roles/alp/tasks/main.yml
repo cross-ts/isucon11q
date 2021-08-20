@@ -1,0 +1,18 @@
+- name: alpが入っていることを確認
+  command: which alp
+  ignore_errors: yes
+  register: alp
+
+- name: alpをインストールする
+  when: alp is failed
+  block:
+    - name: unarchiveに必要なunzipをインストール
+      apt:
+        name: unzip
+
+    - name: alpのバイナリを取得
+      unarchive:
+        src: "https://github.com/tkuchiki/alp/releases/download/{{ alp_version }}/alp_linux_amd64.zip"
+        dest: /usr/local/bin
+        remote_src: true
+        mode: 0755

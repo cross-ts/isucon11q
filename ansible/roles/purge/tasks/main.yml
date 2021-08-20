@@ -1,0 +1,16 @@
+- name: disable apparmor
+  # NOTE: apparmor削除後は失敗するためケアしておく
+  ignore_errors: yes
+  systemd:
+    name: apparmor
+    state: stopped
+    daemon_reload: yes
+    enabled: no
+
+- name: ISUCONに不要なやつをpurgeしておく
+  apt:
+    name: "{{ item }}"
+    purge: yes
+  with_items:
+    - apparmor
+    - iptables

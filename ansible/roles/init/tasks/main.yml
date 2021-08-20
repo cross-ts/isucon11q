@@ -1,0 +1,9 @@
+- name: install necessary packages
+  apt:
+    name: "{{ item }}"
+    update_cache: true
+    cache_valid_time: 3600
+  with_items:
+    - acl # Ubuntu20.04以降でansibleがbecome_userするために必要
+    - libjemalloc-dev # jemalloc有効にしたrubyをビルドするために必要
+    - graphviz # stackprof-webnavでcallgraphを見るために必要

@@ -1,0 +1,8 @@
+- name: Install netdata
+  get_url:
+    url: https://my-netdata.io/kickstart.sh
+    dest: /tmp/kickstart.sh
+    mode: 777
+
+- name: install
+  command: /tmp/kickstart.sh --dont-wait

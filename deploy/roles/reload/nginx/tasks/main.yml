@@ -1,0 +1,17 @@
+# - name: Apply nginx.conf
+#   file:
+#     src: "/home/{{ application_user }}/git/isucon/nginx/{{ item }}"
+#     dest: "/etc/nginx/{{ item }}"
+#     owner: root
+#     group: root
+#     state: link
+#     force: yes
+#   with_items:
+#     - nginx.conf
+
+- name: Reload nginx
+  systemd:
+    name: nginx
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

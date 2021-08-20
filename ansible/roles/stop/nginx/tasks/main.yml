@@ -1,0 +1,6 @@
+- name: Stop nginx
+  systemd:
+    name: nginx
+    state: stopped
+    daemon_reload: yes
+    enabled: no

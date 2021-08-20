@@ -1,0 +1,6 @@
+- name: Stop mysql
+  systemd:
+    name: mysql
+    state: stopped
+    daemon_reload: yes
+    enabled: no

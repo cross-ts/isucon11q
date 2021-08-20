@@ -1,0 +1,9 @@
+- name: Stop all web server
+  systemd:
+    name: "{{ application_name }}.{{ item }}"
+    state: stopped
+    daemon_reload: no
+    enabled: no
+  with_items:
+    - "{{ languages.disable }}"
+    - "{{ languages.enable }}"

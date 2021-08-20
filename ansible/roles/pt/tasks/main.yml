@@ -1,0 +1,18 @@
+- name: percona-toolkitが入っていることを確認
+  command: which pt-query-digest
+  ignore_errors: yes
+  register: pt
+
+- name: percona-toolkitをインストールする
+  when: pt is failed
+  block:
+    # See: https://www.percona.com/doc/percona-repo-config/percona-release.html
+    - name: percona-toolkitのリポジトリを登録
+      apt:
+        deb: https://repo.percona.com/apt/percona-release_latest.generic_all.deb
+
+    - name: aptでpercona-toolkitをインストール
+      apt:
+        name: percona-toolkit
+        update_cache: true
+        cache_valid_time: 3600
