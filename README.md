@@ -1,4 +1,4 @@
-# 対ISUCON用リポジトリ
+# VS ISUCON11q
 
 ## モニタリング結果
 - [alp/nginx](./monitor/results/alp.md)
