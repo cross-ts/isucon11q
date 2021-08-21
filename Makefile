@@ -2,6 +2,7 @@ APPLICATION_NAME := isucondition
 LANGUAGE := ruby
 
 COMMON_SERVER := isucon1
+DB_SERVER := isucon3
 
 .PHONY: monitor
 monitor:
@@ -17,7 +18,7 @@ alp:
 
 .PHONY: pt
 pt:
-	@ssh $(COMMON_SERVER) "sudo pt-query-digest /var/log/mysql/slow.log" | tee monitor/results/pt-query-digest.txt
+	@ssh $(DB_SERVER) "sudo pt-query-digest /var/log/mysql/slow.log" | tee monitor/results/pt-query-digest.txt
 
 .PHONY: clean
 clean:
