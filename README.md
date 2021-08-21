@@ -12,6 +12,7 @@
 ### spec
 - [CPU](./monitor/results/lscpu.txt): 2 core
 - [Memory](./monitor/results/free.txt): 4 GB
+- mysql: 5.7
 
 ### processes
 - [systemd](./monitor/results/list-unit-files.txt)
