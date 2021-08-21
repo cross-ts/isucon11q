@@ -6,8 +6,35 @@ require 'uri'
 require 'mysql2'
 require 'mysql2-cs-bind'
 
+require 'newrelic_rpm'
+require 'stackprof'
+
+class Mysql2ClientWithNewRelic < Mysql2::Client
+  def initialize(*args)
+    super
+  end
+
+  def query(sql, *args)
+    callback = -> (result, metrics, elapsed) do
+      NewRelic::Agent::Datastores.notice_sql(sql, metrics, elapsed)
+    end
+    op = sql[/^(select|insert|update|delete|begin|commit|rollback|truncate)/i] || 'other'
+    table = sql[/\bisu|isu_condition|user|isu_association_config\b/] || 'other'
+    NewRelic::Agent::Datastores.wrap('MySQL', op, table, callback) do
+      super
+    end
+  end
+end
+
 module Isucondition
   class App < Sinatra::Base
+    use StackProf::Middleware, enalbed: true,
+                               mode: :wall,
+                               interval: 1000,
+                               save_every: 5,
+                               raw: true,
+                               path: '/home/isucon/stackprof/'
+
     configure :development do
       require 'sinatra/reloader'
       register Sinatra::Reloader
@@ -48,7 +75,8 @@ module Isucondition
       end
 
       def connect_db
-        Mysql2::Client.new(
+        # Mysql2::Client.new(
+        Mysql2ClientWithNewRelic.new(
           host: @host,
           port: @port,
           username: @user,
