@@ -682,8 +682,8 @@ module Isucondition
       halt_error 400, 'bad request body' if json_params.empty?
 
       datas = []
-      count = db.xquery('SELECT COUNT(*) AS `cnt` FROM `isu` WHERE `jia_isu_uuid` = ?', jia_isu_uuid).first
-      halt_error 404, 'not found: isu' if count.fetch(:cnt).zero?
+      count = db.xquery('SELECT 1 FROM `isu` WHERE `jia_isu_uuid` = ?', jia_isu_uuid).first
+      halt_error 404, 'not found: isu' if count.nil?
 
       json_params.each do |cond|
         halt_error 400, 'bad request body' unless valid_condition_format?(cond.fetch(:condition))
