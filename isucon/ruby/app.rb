@@ -676,6 +676,14 @@ module Isucondition
           timestamp = Time.at(cond.fetch(:timestamp))
           halt_error 400, 'bad request body' unless valid_condition_format?(cond.fetch(:condition))
 
+          ts = cond.fetch(:timestamp)
+          is_sitting = cond.fetch(:is_sitting) ? 1 : 0
+          condition = cond.fetch(:condition)
+          message = cond.fetch(:message)
+          File.open('/dev/shm/condition.csv', 'a') do |f|
+            f.puts "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
+          end
+
           db.xquery(
             'INSERT INTO `isu_condition` (`jia_isu_uuid`, `timestamp`, `is_sitting`, `condition`, `message`) VALUES (?, ?, ?, ?, ?)',
             jia_isu_uuid,
