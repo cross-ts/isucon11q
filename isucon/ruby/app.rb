@@ -392,7 +392,7 @@ module Isucondition
       timestamps_in_this_hour = []
 
       rows.each do |condition|
-        timestamp = condition.fetch(:timestamp)
+        timestamp = condition[:timestamp]
         truncated_condition_time = Time.new(timestamp.year, timestamp.month, timestamp.day, timestamp.hour, 0, 0)
         if truncated_condition_time != start_time_in_this_hour
           unless conditions_in_this_hour.empty?
@@ -479,13 +479,44 @@ module Isucondition
           raise "invalid condition format"
         end
 
-        condition.fetch(:condition).split(',').each do |cond_str|
-          condition_name, value = cond_str.split('=')
-          if value == 'true'
-            conditions_count[condition_name] += 1
-            bad_conditions_count += 1
-          end
+        case condition[:condition]
+        when "is_dirty=false,is_overweight=false,is_broken=false"
+          # noop
+        when "is_dirty=true,is_overweight=false,is_broken=false"
+          conditions_count["is_dirty"] += 1
+          bad_conditions_count += 1
+        when "is_dirty=false,is_overweight=true,is_broken=false"
+          conditions_count["is_overweight"] += 1
+          bad_conditions_count += 1
+        when "is_dirty=false,is_overweight=false,is_broken=true"
+          conditions_count["is_broken"] += 1
+          bad_conditions_count += 1
+        when "is_dirty=true,is_overweight=false,is_broken=true"
+          conditions_count["is_dirty"] += 1
+          conditions_count["is_broken"] += 1
+          bad_conditions_count += 2
+        when "is_dirty=true,is_overweight=true,is_broken=false"
+          conditions_count["is_dirty"] += 1
+          conditions_count["is_overweight"] += 1
+          bad_conditions_count += 2
+        when "is_dirty=false,is_overweight=true,is_broken=true"
+          conditions_count["is_overweight"] += 1
+          conditions_count["is_broken"] += 1
+          bad_conditions_count += 2
+        when "is_dirty=true,is_overweight=true,is_broken=true"
+          conditions_count["is_dirty"] += 1
+          conditions_count["is_overweight"] += 1
+          conditions_count["is_broken"] += 1
+          bad_conditions_count += 3
         end
+
+        # condition.fetch(:condition).split(',').each do |cond_str|
+        #   condition_name, value = cond_str.split('=')
+        #   if value == 'true'
+        #     conditions_count[condition_name] += 1
+        #     bad_conditions_count += 1
+        #   end
+        # end
 
         case
         when bad_conditions_count >= 3
