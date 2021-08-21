@@ -669,6 +669,7 @@ module Isucondition
       halt_error 400, 'bad request body' unless json_params.kind_of?(Array)
       halt_error 400, 'bad request body' if json_params.empty?
 
+      datas = []
       db_transaction do
         count = db.xquery('SELECT COUNT(*) AS `cnt` FROM `isu` WHERE `jia_isu_uuid` = ?', jia_isu_uuid).first
         halt_error 404, 'not found: isu' if count.fetch(:cnt).zero?
@@ -681,9 +682,7 @@ module Isucondition
           is_sitting = cond.fetch(:is_sitting) ? 1 : 0
           condition = cond.fetch(:condition)
           message = cond.fetch(:message)
-          File.open('/dev/shm/condition.csv', 'a') do |f|
-            f.puts "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
-          end
+          datas << "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
 
           # db.xquery(
           #   'INSERT INTO `isu_condition` (`jia_isu_uuid`, `timestamp`, `is_sitting`, `condition`, `message`) VALUES (?, ?, ?, ?, ?)',
@@ -694,6 +693,9 @@ module Isucondition
           #   cond.fetch(:message),
           # )
         end
+      end
+      File.open('/dev/shm/condition.csv', 'a') do |f|
+        f.puts datas
       end
 
       status 202
