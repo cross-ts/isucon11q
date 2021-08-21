@@ -10,8 +10,8 @@
 
 ## サーバ環境
 ### spec
-- [CPU](./monitor/results/lscpu.txt): N core
-- [Memory](./monitor/results/free.txt): N GB
+- [CPU](./monitor/results/lscpu.txt): 2 core
+- [Memory](./monitor/results/free.txt): 4 GB
 
 ### processes
 - [systemd](./monitor/results/list-unit-files.txt)
