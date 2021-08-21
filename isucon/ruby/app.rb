@@ -164,6 +164,19 @@ module Isucondition
 
       # ISUのコンディションの文字列がcsv形式になっているか検証
       def valid_condition_format?(condition_str)
+        case condition_str
+        when "is_dirty=true,is_overweight=false,is_broken=false",
+             "is_dirty=false,is_overweight=false,is_broken=false",
+             "is_dirty=false,is_overweight=true,is_broken=false",
+             "is_dirty=false,is_overweight=true,is_broken=true",
+             "is_dirty=false,is_overweight=false,is_broken=true",
+             "is_dirty=true,is_overweight=false,is_broken=true",
+             "is_dirty=true,is_overweight=true,is_broken=false",
+             "is_dirty=true,is_overweight=true,is_broken=true"
+          return true
+        else
+          return false
+        end
         keys = %w(is_dirty= is_overweight= is_broken=)
         value_true = 'true'
         value_false = 'false'
@@ -654,7 +667,7 @@ module Isucondition
       # TODO: 一定割合リクエストを落としてしのぐようにしたが、本来は全量さばけるようにすべき
       drop_probability = 0.9
       if rand <= drop_probability
-        request.env['rack.logger'].warn 'drop post isu condition request'
+        # request.env['rack.logger'].warn 'drop post isu condition request'
         halt_error 202, ''
       end
 
@@ -670,29 +683,18 @@ module Isucondition
       halt_error 400, 'bad request body' if json_params.empty?
 
       datas = []
-      db_transaction do
-        count = db.xquery('SELECT COUNT(*) AS `cnt` FROM `isu` WHERE `jia_isu_uuid` = ?', jia_isu_uuid).first
-        halt_error 404, 'not found: isu' if count.fetch(:cnt).zero?
+      count = db.xquery('SELECT COUNT(*) AS `cnt` FROM `isu` WHERE `jia_isu_uuid` = ?', jia_isu_uuid).first
+      halt_error 404, 'not found: isu' if count.fetch(:cnt).zero?
 
-        json_params.each do |cond|
-          timestamp = Time.at(cond.fetch(:timestamp))
-          halt_error 400, 'bad request body' unless valid_condition_format?(cond.fetch(:condition))
+      json_params.each do |cond|
+        halt_error 400, 'bad request body' unless valid_condition_format?(cond.fetch(:condition))
 
-          ts = timestamp
-          is_sitting = cond.fetch(:is_sitting) ? 1 : 0
-          condition = cond.fetch(:condition)
-          message = cond.fetch(:message)
-          datas << "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
+        ts = Time.at(cond.fetch(:timestamp))
+        is_sitting = cond.fetch(:is_sitting) ? 1 : 0
+        condition = cond.fetch(:condition)
+        message = cond.fetch(:message)
+        datas << "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
 
-          # db.xquery(
-          #   'INSERT INTO `isu_condition` (`jia_isu_uuid`, `timestamp`, `is_sitting`, `condition`, `message`) VALUES (?, ?, ?, ?, ?)',
-          #   jia_isu_uuid,
-          #   timestamp,
-          #   cond.fetch(:is_sitting),
-          #   cond.fetch(:condition),
-          #   cond.fetch(:message),
-          # )
-        end
       end
       File.open('/dev/shm/condition.csv', 'a') do |f|
         f.puts datas
