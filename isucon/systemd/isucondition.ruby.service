@@ -4,7 +4,7 @@ After=network.target mysql.service cloud-config.service
 
 [Service]
 WorkingDirectory=/home/isucon/git/isucon/ruby
-EnvironmentFile=/home/isucon/env.sh
+EnvironmentFile=/home/isucon/git/isucon/env.sh
 EnvironmentFile=/home/isucon/env.secret.sh
 Environment=RACK_ENV=production
 
