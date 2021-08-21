@@ -1,5 +1,9 @@
 # VS ISUCON11q
 
+## Document
+- [レギュレーション](https://isucon.net/archives/55854734.html)
+- [当日マニュアル](https://gist.github.com/ockie1729/53589a0e8c979198b6231d8599153c70)
+
 ## モニタリング結果
 - [alp/nginx](./monitor/results/alp.md)
 - [pt-query-digest / mysql](./monitor/results/pt-query-digest.txt)
