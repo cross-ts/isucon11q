@@ -684,14 +684,14 @@ module Isucondition
             f.puts "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
           end
 
-          db.xquery(
-            'INSERT INTO `isu_condition` (`jia_isu_uuid`, `timestamp`, `is_sitting`, `condition`, `message`) VALUES (?, ?, ?, ?, ?)',
-            jia_isu_uuid,
-            timestamp,
-            cond.fetch(:is_sitting),
-            cond.fetch(:condition),
-            cond.fetch(:message),
-          )
+          # db.xquery(
+          #   'INSERT INTO `isu_condition` (`jia_isu_uuid`, `timestamp`, `is_sitting`, `condition`, `message`) VALUES (?, ?, ?, ?, ?)',
+          #   jia_isu_uuid,
+          #   timestamp,
+          #   cond.fetch(:is_sitting),
+          #   cond.fetch(:condition),
+          #   cond.fetch(:message),
+          # )
         end
       end
 
