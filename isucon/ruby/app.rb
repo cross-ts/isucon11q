@@ -164,6 +164,7 @@ module Isucondition
 
       # ISUのコンディションの文字列がcsv形式になっているか検証
       def valid_condition_format?(condition_str)
+        # XXX: 多分固定値だからこれで大丈夫
         case condition_str
         when "is_dirty=true,is_overweight=false,is_broken=false",
              "is_dirty=false,is_overweight=false,is_broken=false",
@@ -177,30 +178,30 @@ module Isucondition
         else
           return false
         end
-        keys = %w(is_dirty= is_overweight= is_broken=)
-        value_true = 'true'
-        value_false = 'false'
+        # keys = %w(is_dirty= is_overweight= is_broken=)
+        # value_true = 'true'
+        # value_false = 'false'
 
-        idx_cond_str = 0
-        keys.each_with_index do |key, idx_keys|
-          return false unless condition_str[idx_cond_str..-1].start_with?(key)
-          idx_cond_str += key.size
-          case
-          when condition_str[idx_cond_str..-1].start_with?(value_true)
-            idx_cond_str += value_true.size
-          when condition_str[idx_cond_str..-1].start_with?(value_false)
-            idx_cond_str += value_false.size
-          else
-            return false
-          end
+        # idx_cond_str = 0
+        # keys.each_with_index do |key, idx_keys|
+        #   return false unless condition_str[idx_cond_str..-1].start_with?(key)
+        #   idx_cond_str += key.size
+        #   case
+        #   when condition_str[idx_cond_str..-1].start_with?(value_true)
+        #     idx_cond_str += value_true.size
+        #   when condition_str[idx_cond_str..-1].start_with?(value_false)
+        #     idx_cond_str += value_false.size
+        #   else
+        #     return false
+        #   end
 
-          if idx_keys < (keys.size-1)
-            return false unless condition_str[idx_cond_str] == ?,
-            idx_cond_str += 1
-          end
-        end
+        #   if idx_keys < (keys.size-1)
+        #     return false unless condition_str[idx_cond_str] == ?,
+        #     idx_cond_str += 1
+        #   end
+        # end
 
-        idx_cond_str == condition_str.size
+        # idx_cond_str == condition_str.size
       end
     end
 
