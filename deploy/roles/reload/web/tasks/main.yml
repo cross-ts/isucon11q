@@ -8,6 +8,7 @@
     force: yes
   with_items:
     - "{{ application_name }}.ruby.service"
+    - "{{ application_name }}.bot.service"
 
 - name: Update env.sh
   file:
@@ -32,4 +33,6 @@
     state: restarted
     daemon_reload: yes
     enabled: yes
-  with_items: "{{ languages.enable }}"
+  with_items:
+    - "{{ languages.enable }}"
+    - bot
