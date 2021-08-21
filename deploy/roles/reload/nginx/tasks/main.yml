@@ -10,6 +10,7 @@
     - nginx.conf
     - conf.d/gzip.conf
     - conf.d/log.conf
+    - sites-available/isucondition.conf
 
 - name: Reload nginx
   systemd:

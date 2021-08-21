@@ -1,1 +1,113 @@
 [mysql]
+default-character-set=utf8mb4
+
+[mysqld]
+# Set the default character set.
+# (Defaults to latin1;)
+character-set-server=utf8mb4
+
+# Log slow queries to a table or log file. Defaults logging
+# to a file hostname-slow.log or a table mysql.slow_log if
+# --log-output=TABLE is used. Must be enabled to activate
+# other slow log options
+slow_query_log = 1
+# Log slow queries to given log file. Defaults logging to
+# hostname-slow.log. Must be enabled to activate other slow
+# log options
+slow_query_log_file = /var/log/mysql/slow.log
+# Log all queries that have taken more than long_query_time
+# seconds to execute to file. The argument will be treated
+# as a decimal value with microsecond precision
+long_query_time = 0.01
+
+# Enable the performance schema.
+# (Defaults to on; use --skip-performance-schema to disable.)
+skip_performance_schema
+
+# Stores each InnoDB table to an .ibd file in the database dir.
+# (Defaults to on; use --skip-innodb-file-per-table to disable.)
+innodb_file_per_table = 1
+
+# The size of the buffer used for index blocks for MyISAM
+# tables. Increase this to get better index handling
+# (for all reads and multiple writes) to as much as you can afford
+key_buffer_size=16M
+
+# The size of the memory buffer InnoDB uses to cache data
+# and indexes of its tables.
+# NOTE: ~ 75% of machine's memory size
+innodb_buffer_pool_size=512M
+
+# The size of the buffer which InnoDB uses to write log to
+# the log files on disk.
+# NOTE: Increase if you are insert, update, or delete a lot of rows in a single transaction.
+innodb_log_buffer_size=16M
+
+# Size of each log file (in bytes).
+innodb_log_file_size=512M
+
+# Number of background read I/O threads in InnoDB.
+innodb_read_io_threads = 8
+
+# Number of background write I/O threads in InnoDB.
+innodb_write_io_threads = 8
+
+# Set to
+# 0 (write and flush once per second),
+# 1 (write and flush at each commit), or
+# 2 (write at commit, flush once per second).
+innodb_flush_log_at_trx_commit = 2
+
+# With which method to flush data
+# NOTE: If there are processes other than MySQL that perform heavy disk I/O, use O_DIRECT and keep the InnoDB buffer pool size small.
+#innodb_flush_method = O_DIRECT
+
+# Enable InnoDB doublewrite buffer (enabled by default).
+# Disable with --skip-innodb-doublewrite.
+# (Defaults to on; use --skip-innodb-doublewrite to disable.)
+skip_innodb_doublewrite
+
+# Timeout in seconds an InnoDB transaction may wait for a
+# lock before being rolled back. Values above 100000000
+# disable the timeout.
+innodb_lock_wait_timeout = 5
+
+# The AUTOINC lock modes supported by InnoDB:
+# 0 => Old style AUTOINC locking (for backward compatibility);
+# 1 => New style AUTOINC locking;
+# 2 => No AUTOINC locking (unsafe for SBR)
+innodb_autoinc_lock_mode = 2
+
+# Max packet length to send to or receive from the server
+#max_allowed_packet	= 16M
+
+# Dump only the hottest N% of each buffer pool, defaults to 25
+# NOTE: It may take a long time to boot up when it's 100.
+#innodb_buffer_pool_dump_pct = 100
+
+# Dump the buffer pool into a file named @@innodb_buffer_pool_filename
+# (Defaults to on; use --skip-innodb-buffer-pool-dump-at-shutdown to disable.)
+innodb_buffer_pool_dump_at_shutdown = 1
+
+#Load the buffer pool from a file named @@innodb_buffer_pool_filename
+# (Defaults to on; use --skip-innodb-buffer-pool-load-at-startup to disable.)
+innodb_buffer_pool_load_at_startup = 1
+
+# OFF = Don't cache or retrieve results. ON = Cache all
+# results except SELECT SQL_NO_CACHE ... queries. DEMAND =
+# Cache only SELECT SQL_CACHE ... queries. This variable is
+# deprecated and will be removed in a future release.
+query_cache_type = 1
+
+# Don't cache results that are bigger than this. This
+# variable is deprecated and will be removed in a future
+# release.
+query_cache_limit = 2M
+
+# The memory allocated to store results from old queries.
+# This variable is deprecated and will be removed in a
+# future release.
+query_cache_size = 256M
+
+[client]
+default-character-set=utf8mb4

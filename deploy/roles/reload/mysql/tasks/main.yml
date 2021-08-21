@@ -1,17 +1,15 @@
-# - name: Apply mysql.cnf
-#   file:
-#     src: "/home/{{ application_user }}/git/isucon/mysql/{{ item }}"
-#     dest: "/etc/mysql/{{ item }}"
-#     owner: root
-#     group: root
-#     state: hard
-#     force: yes
-#   with_items:
-#     - mysql.cnf
-#     - conf.d/mysql.cnf
-#     - mysql.conf.d/mysql.cnf
-#     - mysql.conf.d/mysqld.cnf
-
+- name: Apply mysql.cnf
+  file:
+    src: "/home/{{ application_user }}/git/isucon/mysql/{{ item }}"
+    dest: "/etc/mysql/{{ item }}"
+    owner: root
+    group: root
+    state: hard
+    force: yes
+  with_items:
+    - mariadb.cnf
+    - conf.d/mysql.cnf
+    - mariadb.conf.d/50-server.cnf
 
 - name: slow.logを作成しておく
   file:
