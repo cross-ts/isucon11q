@@ -372,13 +372,11 @@ module Isucondition
       halt_error 400, 'missing: datetime' if !datetime_str || datetime_str.empty?
       datetime = Time.at(Integer(datetime_str)) rescue halt_error(400, 'bad format: datetime')
       date = Time.new(datetime.year, datetime.month, datetime.day, datetime.hour, 0, 0)
+      cnt = db.xquery('SELECT 1 FROM `isu` WHERE `jia_isu_uuid` = ? AND `jia_user_id` = ?', jia_isu_uuid, jia_user_id).first
+      halt_error 404, 'not found: isu' if cnt.nil?
 
-      res = db_transaction do
-        cnt = db.xquery('SELECT 1 FROM `isu` WHERE `jia_isu_uuid` = ? AND `jia_user_id` = ?', jia_isu_uuid, jia_user_id).first
-        halt_error 404, 'not found: isu' if cnt.nil?
-
-        generate_isu_graph_response(jia_isu_uuid, date)
-      end
+      # XXX: これがやばい
+      res = generate_isu_graph_response(jia_isu_uuid, date)
 
       content_type :json
       res.to_json
@@ -564,14 +562,14 @@ module Isucondition
           'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? ORDER BY `timestamp`',
           jia_isu_uuid,
           end_time,
-        ).reverse!
+        )
       else
         db.xquery(
           'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? AND ? <= `timestamp` ORDER BY `timestamp`',
           jia_isu_uuid,
           end_time,
           start_time,
-        ).reverse!
+        )
       end
 
       conditions_response = conditions.map do |c|
@@ -589,7 +587,7 @@ module Isucondition
         else
           nil
         end
-      end.compact
+      end.reverse!.compact
 
       conditions_response = conditions_response[0, limit] if conditions_response.size > limit
       conditions_response
