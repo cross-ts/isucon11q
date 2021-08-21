@@ -1,4 +1,4 @@
-APPLICATION_NAME := app_name
+APPLICATION_NAME := isucondition
 LANGUAGE := ruby
 
 COMMON_SERVER := isucon1

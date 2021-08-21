@@ -2,7 +2,7 @@
 application_user: isucon
 
 # 今回のアプリ名
-application_name: app_name
+application_name: isucondition
 
 # 使用する言語設定
 languages:
