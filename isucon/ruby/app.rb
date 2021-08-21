@@ -247,7 +247,8 @@ module Isucondition
       response_list = db_transaction do
         isu_list = db.xquery('SELECT * FROM `isu` WHERE `jia_user_id` = ? ORDER BY `id` DESC', jia_user_id)
         isu_list.map do |isu|
-          last_condition = db.xquery('SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? ORDER BY `timestamp` DESC LIMIT 1', isu.fetch(:jia_isu_uuid)).first
+          jia_isu_uuid = isu.fetch(:jia_isu_uuid)
+          last_condition = db.xquery('SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` = (SELECT MAX(`timestamp`) WHERE `jia_isu_uuid` = ?)', jia_isu_uuid, jia_isu_uuid) ).first
 
           formatted_condition = last_condition ? {
             jia_isu_uuid: last_condition.fetch(:jia_isu_uuid),
