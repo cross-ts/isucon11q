@@ -34,9 +34,7 @@ module Isucondition
       register Sinatra::Reloader
     end
 
-    configure do
-      disable :logging
-    end
+    disable :logging
 
     SESSION_NAME = 'isucondition_ruby'
     CONDITION_LIMIT = 20
