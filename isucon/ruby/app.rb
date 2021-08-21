@@ -220,12 +220,6 @@ module Isucondition
         'jia_service_url',
         jia_service_url,
       )
-      begin
-        File.delete('/dev/shm/condition.csv')
-      rescue
-        # nothing to do
-      end
-
       content_type :json
       { language: 'ruby' }.to_json
     end
