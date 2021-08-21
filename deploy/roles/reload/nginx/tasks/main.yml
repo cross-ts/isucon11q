@@ -1,13 +1,15 @@
-# - name: Apply nginx.conf
-#   file:
-#     src: "/home/{{ application_user }}/git/isucon/nginx/{{ item }}"
-#     dest: "/etc/nginx/{{ item }}"
-#     owner: root
-#     group: root
-#     state: link
-#     force: yes
-#   with_items:
-#     - nginx.conf
+- name: Apply nginx.conf
+  file:
+    src: "/home/{{ application_user }}/git/isucon/nginx/{{ item }}"
+    dest: "/etc/nginx/{{ item }}"
+    owner: root
+    group: root
+    state: link
+    force: yes
+  with_items:
+    - nginx.conf
+    - conf.d/gzip.conf
+    - conf.d/log.conf
 
 - name: Reload nginx
   systemd:
