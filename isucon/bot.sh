@@ -1,0 +1,1 @@
+mysql -pisucon -uisucon -A isucondition -e "LOAD DATA LOCAL INFILE '/dev/shm/condition.csv' INTO TABLE isucondition.isu_condition FIELDS TERMINATED BY ',' ENCLOSED BY '\"' (\`jia_isu_uuid\`, \`timestamp\`, \`is_sitting\`, \`condition\`, \`message\`);"
