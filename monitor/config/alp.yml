@@ -7,8 +7,8 @@ matching_groups:
   - '^.*.js$'
   - '^.*.css$'
   - '^.*.png$'
-# - '^/api/user/reservations/[0-9]+$'
-# - '^/api/user/reservations/[0-9]+/cancel$'
+  - '^/api/condition/[0-9a-z]+$'
+  - '^/api/isu/[0-9a-z-]+$'
 
 ltsv: {}
 json: {}
