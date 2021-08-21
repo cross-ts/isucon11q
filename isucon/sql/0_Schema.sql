@@ -12,7 +12,8 @@ CREATE TABLE `isu` (
   `jia_user_id` VARCHAR(255) NOT NULL,
   `created_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
   `updated_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-   PRIMARY KEY(`id`)
+   PRIMARY KEY(`id`),
+  INDEX i1 (jia_isu_uuid)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4;
 
 CREATE TABLE `isu_condition` (
@@ -28,7 +29,8 @@ CREATE TABLE `isu_condition` (
 
 CREATE TABLE `user` (
   `jia_user_id` VARCHAR(255) PRIMARY KEY,
-  `created_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6)
+  `created_at` DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+  INDEX i1 (jia_user_id)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8mb4;
 
 CREATE TABLE `isu_association_config` (
