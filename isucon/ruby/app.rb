@@ -510,14 +510,6 @@ module Isucondition
           bad_conditions_count += 3
         end
 
-        # condition.fetch(:condition).split(',').each do |cond_str|
-        #   condition_name, value = cond_str.split('=')
-        #   if value == 'true'
-        #     conditions_count[condition_name] += 1
-        #     bad_conditions_count += 1
-        #   end
-        # end
-
         case
         when bad_conditions_count >= 3
           raw_score += SCORE_CONDITION_LEVEL_CRITICAL
@@ -528,10 +520,10 @@ module Isucondition
         end
       end
 
-      sitting_count = 0
-      isu_conditions.each do |condition|
-        sitting_count += 1 if condition.fetch(:is_sitting)
-      end
+      sitting_count = isu_conditions.count { |c| c[:is_sitting] }
+      # isu_conditions.each do |condition|
+      #   sitting_count += 1 if condition.fetch(:is_sitting)
+      # end
 
       isu_conditions_length = isu_conditions.size
       score = raw_score * 100 / 3 / isu_conditions_length
