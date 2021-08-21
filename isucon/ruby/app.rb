@@ -582,16 +582,18 @@ module Isucondition
     def get_isu_conditions_from_db(jia_isu_uuid, end_time, condition_level, start_time, limit, isu_name)
       conditions = if start_time.to_i == 0
         db.xquery(
-          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? ORDER BY `timestamp`',
+          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? ORDER BY `timestamp` LIMIT ?',
           jia_isu_uuid,
           end_time,
+          limit
         )
       else
         db.xquery(
-          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? AND ? <= `timestamp` ORDER BY `timestamp`',
+          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? AND ? <= `timestamp` ORDER BY `timestamp` LIMIT ?',
           jia_isu_uuid,
           end_time,
           start_time,
+          limit
         )
       end
 
@@ -612,7 +614,7 @@ module Isucondition
         end
       end.reverse!.compact
 
-      conditions_response = conditions_response[0, limit] if conditions_response.size > limit
+      # conditions_response = conditions_response[0, limit] if conditions_response.size > limit
       conditions_response
     end
 
