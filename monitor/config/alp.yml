@@ -10,6 +10,7 @@ matching_groups:
   - '^/api/condition/[0-9a-z-]+$'
   - '^/api/isu/[0-9a-z-]+$'
   - '^/api/isu/[0-9a-z-]+/graph$'
+  - '^/api/isu/[0-9a-z-]+/icon$'
   - '^/isu/[0-9a-z-]'
   - '^/isu/[0-9a-z-]/condition'
   - '^/isu/[0-9a-z-]/graph'
