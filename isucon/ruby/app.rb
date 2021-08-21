@@ -375,8 +375,8 @@ module Isucondition
 
 
       res = db_transaction do
-        cnt = db.xquery('SELECT COUNT(*) AS `cnt` FROM `isu` WHERE `jia_user_id` = ? AND `jia_isu_uuid` = ?', jia_user_id, jia_isu_uuid).first
-        halt_error 404, 'not found: isu' if cnt.fetch(:cnt) == 0
+        cnt = db.xquery('SELECT 1 FROM `isu` WHERE `jia_isu_uuid` = ? AND `jia_user_id` = ?', jia_isu_uuid, jia_user_id).first
+        halt_error 404, 'not found: isu' if cnt.nil?
 
         generate_isu_graph_response(jia_isu_uuid, date)
       end
