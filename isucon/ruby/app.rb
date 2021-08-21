@@ -6,7 +6,7 @@ require 'uri'
 require 'mysql2'
 require 'mysql2-cs-bind'
 
-require 'newrelic_rpm'
+#require 'newrelic_rpm'
 #require 'stackprof'
 
 class Mysql2ClientWithNewRelic < Mysql2::Client
