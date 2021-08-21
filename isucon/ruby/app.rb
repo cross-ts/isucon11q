@@ -620,12 +620,10 @@ module Isucondition
 
     # ISUの性格毎の最新のコンディション情報
     get '/api/trend' do
-      # character_list = db.query('SELECT `character` FROM `isu` GROUP BY `character`')
-      all_isu = db.query('SELECT * FROM `isu`')
-      grouped = all_isu.group_by { |i| i.fetch[:character] }
+      character_list = db.query('SELECT `character` FROM `isu` GROUP BY `character`')
 
-      res = grouped.map do |character, isu_list|
-        # isu_list = db.xquery('SELECT * FROM `isu` WHERE `character` = ?', character.fetch(:character))
+      res = character_list.map do |character|
+        isu_list = db.xquery('SELECT * FROM `isu` WHERE `character` = ?', character.fetch(:character))
         character_info_isu_conditions = []
         character_warning_isu_conditions = []
         character_critical_isu_conditions = []
@@ -683,17 +681,19 @@ module Isucondition
       halt_error 400, 'bad request body' unless json_params.kind_of?(Array)
       halt_error 400, 'bad request body' if json_params.empty?
 
+      datas = []
       count = db.xquery('SELECT 1 FROM `isu` WHERE `jia_isu_uuid` = ?', jia_isu_uuid).first
       halt_error 404, 'not found: isu' if count.nil?
 
-      datas = json_params.map do |cond|
+      json_params.each do |cond|
         halt_error 400, 'bad request body' unless valid_condition_format?(cond.fetch(:condition))
 
         ts = Time.at(cond.fetch(:timestamp))
         is_sitting = cond.fetch(:is_sitting) ? 1 : 0
         condition = cond.fetch(:condition)
         message = cond.fetch(:message)
-        "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
+        datas << "\"#{jia_isu_uuid}\",\"#{ts}\",#{is_sitting},\"#{condition}\",\"#{message}\""
+
       end
       File.open('/dev/shm/condition.csv', 'a') do |f|
         f.puts datas
