@@ -8,7 +8,7 @@
     - role: htop
   # - role: netdata # 個人的にはdstatで十分なので入れない
     - role: dstat
-  # - role: purge
+    - role: purge
 
 - hosts: common
   become: yes
