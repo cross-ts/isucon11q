@@ -605,7 +605,8 @@ module Isucondition
         character_critical_isu_conditions = []
 
         isu_list.each do |isu|
-          conditions = db.xquery('SELECT `condition`, `timestamp` FROM `isu_condition` WHERE `jia_isu_uuid` = ? ORDER BY timestamp DESC LIMIT 1', isu.fetch(:jia_isu_uuid)).to_a
+          jia_isu_uuid = isu.fetch(:jia_isu_uuid)
+          conditions = db.xquery('SELECT `condition`, `timestamp` FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` = (SELECT MAX(`timestamp`) FROM `isu_condition` WHERE `jia_isu_uuid` = ?)', jia_isu_uuid, jia_isu_uuid).to_a
           unless conditions.empty?
             isu_last_condition = conditions.first
             condition_level = calculate_condition_level(isu_last_condition.fetch(:condition))
