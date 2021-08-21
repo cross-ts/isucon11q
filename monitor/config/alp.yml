@@ -9,6 +9,7 @@ matching_groups:
   - '^.*.png$'
   - '^/api/condition/[0-9a-z-]+$'
   - '^/api/isu/[0-9a-z-]+$'
+  - '^/api/isu/[0-9a-z-]+/graph$'
   - '^/isu/[0-9a-z-]'
   - '^/isu/[0-9a-z-]/condition'
   - '^/isu/[0-9a-z-]/graph'
