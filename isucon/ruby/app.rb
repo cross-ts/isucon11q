@@ -45,7 +45,7 @@ module Isucondition
     FRONTEND_CONTENTS_PATH = '../public'
     JIA_JWT_SIGNING_KEY_PATH = '../ec256-public.pem'
     DEFAULT_ICON_FILE_PATH = '../NoImage.jpg'
-    DEFAULT_JIA_SERVICE_URL = 'http://localhost:5000'
+    DEFAULT_JIA_SERVICE_URL = 'http://localhost:3000'
 
     MYSQL_ERR_NUM_DUPLICATE_ENTRY = 1062
     CONDITION_LEVEL_INFO = 'info'
