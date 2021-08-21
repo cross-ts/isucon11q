@@ -56,6 +56,8 @@ module Isucondition
     SCORE_CONDITION_LEVEL_WARNING = 2
     SCORE_CONDITION_LEVEL_CRITICAL = 1
 
+    CHARACTERS = ["いじっぱり", "うっかりや", "おくびょう", "おだやか", "おっとり", "おとなしい", "がんばりや", "きまぐれ", "さみしがり", "しんちょう", "すなお", "ずぶとい", "せっかち", "てれや", "なまいき", "のうてんき", "のんき", "ひかえめ", "まじめ", "むじゃき", "やんちゃ", "ゆうかん", "ようき", "れいせい", "わんぱく"]
+
     set :session_secret, 'isucondition'
     set :sessions, key: SESSION_NAME
 
@@ -596,16 +598,14 @@ module Isucondition
 
     # ISUの性格毎の最新のコンディション情報
     get '/api/trend' do
-      character_list = db.query('SELECT `character` FROM `isu` GROUP BY `character`')
-
-      res = character_list.map do |character|
+      res = CHARACTERS.map do |character|
         isu_list = db.xquery('SELECT * FROM `isu` WHERE `character` = ?', character.fetch(:character))
         character_info_isu_conditions = []
         character_warning_isu_conditions = []
         character_critical_isu_conditions = []
 
         isu_list.each do |isu|
-          conditions = db.xquery('SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? ORDER BY timestamp DESC', isu.fetch(:jia_isu_uuid)).to_a
+          conditions = db.xquery('SELECT `condition`, `timestamp` FROM `isu_condition` WHERE `jia_isu_uuid` = ? ORDER BY timestamp DESC', isu.fetch(:jia_isu_uuid)).to_a
           unless conditions.empty?
             isu_last_condition = conditions.first
             condition_level = calculate_condition_level(isu_last_condition.fetch(:condition))
