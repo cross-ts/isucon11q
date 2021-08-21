@@ -8,7 +8,7 @@ EnvironmentFile=/home/isucon/git/isucon/env.sh
 
 User=isucon
 Group=isucon
-ExecStart=/home/isucon/git/isucon/bot.sh
+ExecStart=/bin/bash bot.sh
 ExecStop=/bin/kill -s QUIT $MAINPID
 
 Restart   = always
