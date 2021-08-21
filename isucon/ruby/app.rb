@@ -7,7 +7,7 @@ require 'mysql2'
 require 'mysql2-cs-bind'
 
 require 'newrelic_rpm'
-require 'stackprof'
+#require 'stackprof'
 
 class Mysql2ClientWithNewRelic < Mysql2::Client
   def initialize(*args)
@@ -28,16 +28,14 @@ end
 
 module Isucondition
   class App < Sinatra::Base
-    use StackProf::Middleware, enalbed: true,
-                               mode: :wall,
-                               interval: 1000,
-                               save_every: 5,
-                               raw: true,
-                               path: '/home/isucon/stackprof/'
 
     configure :development do
       require 'sinatra/reloader'
       register Sinatra::Reloader
+    end
+
+    configure do
+      disable :logging
     end
 
     SESSION_NAME = 'isucondition_ruby'
@@ -61,6 +59,9 @@ module Isucondition
     set :session_secret, 'isucondition'
     set :sessions, key: SESSION_NAME
 
+    set :environment, :production
+
+
     set :public_folder, FRONTEND_CONTENTS_PATH
     set :protection, false  # IPアドレスでHTTPS接続した場合に一部機能が動かなくなるため無効化
 
@@ -77,8 +78,8 @@ module Isucondition
       end
 
       def connect_db
-        # Mysql2::Client.new(
-        Mysql2ClientWithNewRelic.new(
+        Mysql2::Client.new(
+        # Mysql2ClientWithNewRelic.new(
           host: @host,
           port: @port,
           username: @user,
@@ -520,9 +521,6 @@ module Isucondition
       end
 
       sitting_count = isu_conditions.count { |c| c[:is_sitting] }
-      # isu_conditions.each do |condition|
-      #   sitting_count += 1 if condition.fetch(:is_sitting)
-      # end
 
       isu_conditions_length = isu_conditions.size
       score = raw_score * 100 / 3 / isu_conditions_length
