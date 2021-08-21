@@ -7,6 +7,7 @@ WorkingDirectory=/home/isucon/git/isucon/ruby
 EnvironmentFile=/home/isucon/git/isucon/env.sh
 EnvironmentFile=/home/isucon/env.secret.sh
 Environment=RACK_ENV=production
+StartLimitBurst=999
 
 User=isucon
 Group=isucon
