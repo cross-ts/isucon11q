@@ -373,7 +373,6 @@ module Isucondition
       datetime = Time.at(Integer(datetime_str)) rescue halt_error(400, 'bad format: datetime')
       date = Time.new(datetime.year, datetime.month, datetime.day, datetime.hour, 0, 0)
 
-
       res = db_transaction do
         cnt = db.xquery('SELECT 1 FROM `isu` WHERE `jia_isu_uuid` = ? AND `jia_user_id` = ?', jia_isu_uuid, jia_user_id).first
         halt_error 404, 'not found: isu' if cnt.nil?
@@ -562,17 +561,17 @@ module Isucondition
     def get_isu_conditions_from_db(jia_isu_uuid, end_time, condition_level, start_time, limit, isu_name)
       conditions = if start_time.to_i == 0
         db.xquery(
-          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? ORDER BY `timestamp` DESC',
+          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? ORDER BY `timestamp`',
           jia_isu_uuid,
           end_time,
-        )
+        ).reverse!
       else
         db.xquery(
-          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? AND ? <= `timestamp` ORDER BY `timestamp` DESC',
+          'SELECT * FROM `isu_condition` WHERE `jia_isu_uuid` = ? AND `timestamp` < ? AND ? <= `timestamp` ORDER BY `timestamp`',
           jia_isu_uuid,
           end_time,
           start_time,
-        )
+        ).reverse!
       end
 
       conditions_response = conditions.map do |c|
