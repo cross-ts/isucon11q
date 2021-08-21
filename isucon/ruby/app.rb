@@ -359,6 +359,7 @@ module Isucondition
       isu = db.xquery('SELECT `image` FROM `isu` WHERE `jia_isu_uuid` = ? AND `jia_user_id` = ?', jia_isu_uuid, jia_user_id).first
       halt_error 404, 'not found: isu' unless isu
 
+      cache_control "public, max-age=604800, immutable"
       isu.fetch(:image)
     end
 
