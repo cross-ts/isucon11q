@@ -7,8 +7,9 @@ matching_groups:
   - '^.*.js$'
   - '^.*.css$'
   - '^.*.png$'
-  - '^/api/condition/[0-9a-z]+$'
+  - '^/api/condition/[0-9a-z-]+$'
   - '^/api/isu/[0-9a-z-]+$'
+  - '/isu/[0-9a-z-]/condition$'
 
 ltsv: {}
 json: {}
