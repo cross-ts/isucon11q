@@ -678,7 +678,7 @@ module Isucondition
           timestamp = Time.at(cond.fetch(:timestamp))
           halt_error 400, 'bad request body' unless valid_condition_format?(cond.fetch(:condition))
 
-          ts = cond.fetch(:timestamp)
+          ts = timestamp
           is_sitting = cond.fetch(:is_sitting) ? 1 : 0
           condition = cond.fetch(:condition)
           message = cond.fetch(:message)
