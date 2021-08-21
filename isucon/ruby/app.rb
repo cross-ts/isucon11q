@@ -130,7 +130,6 @@ module Isucondition
       def user_id_from_session
         jia_user_id = session[:jia_user_id]
         return nil if !jia_user_id || jia_user_id.empty?
-        # TODO: SELECT 1に変更
         count = db.xquery('SELECT 1 FROM `user` WHERE `jia_user_id` = ?', jia_user_id).first
         return nil if count.nil?
 
